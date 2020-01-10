@@ -59,3 +59,133 @@
 
 2. 小红参加毕业典礼时，拍了不少的照片，准备发朋友圈的时候，朋友看见了跟他说：“我用过一个APP无论你在哪里，都可以自行定位到任意一个地方就能发布动态，就算你在工作了，在想起母校时也能定位到这里。而且在那里都是毕业生的动态，发布自己在母校的趣事，等我们老了翻阅也更方便呀，现在的朋友圈都太杂了， 都是发布自己每天的动态生活，以后回看起来没有那么方便。”小红果断地下载了这个APP
 
+
+#### API调用
+
+### 1. 百度API语音识别API
+
+- 输入
+
+ ```
+from aip import AipSpeech
+
+""" 你的 APPID AK SK """
+#宏定义
+APP_ID = '18175774'
+API_KEY = 'GQaQMLaIRjffPgeNNPWb****'
+SECRET_KEY = '80gadDMUTsdFR4BRVvs0HvGvXEFo****' #由于隐私问题，我这个是随便填的一个数
+                                               #你们要用自己的数据
+
+client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)
+
+# 读取语音文件函数
+def get_file_content(filePath):
+    with open(filePath, 'rb') as fp:
+        return fp.read()
+
+
+# 识别本地文件  主函数
+print(client.asr(get_file_content('C:\Users\Lenovo\Desktop\speaking.wav'), 'wav', 16000, {'dev_pid': 1536,}))
+
+ ```
+ 
+ - 输出
+ 
+  ```
+  
+ {
+    "err_no": 0,
+    "err_msg": "success.",
+    "corpus_no": "15984125203285357600",
+    "sn": "235C524F-23TR-562F-73DR-9157WOMG3C8H",
+    "result": ["网络与新媒体"]
+}
+ 
+ 
+ ```
+
+2. 高德地图API调用
+
+#####　地理编码
+
+- 输入
+
+ ```
+ key_liu = 'a6e0d86bb5e96f5d29947b0da57*****'
+def geo(add:str,city:str)-> dict:
+    """获取地理编码"""
+    url = 'https://restapi.amap.com/v3/geocode/geo?parameters'
+    param = {
+        'key':key_liu,
+        'address':add,
+        'city':city,
+        'output':'json'
+    }
+    response = requests.get(url,params=param)
+    data = response.json()
+    return data
+
+geo('广东省广州市从化区龙岗','广州')
+
+ ```
+
+- 输出
+
+ ```
+{'status': '1',
+ 'info': 'OK',
+ 'infocode': '10000',
+ 'count': '1',
+ 'geocodes': [{'formatted_address': '广东省广州市从化区龙岗',
+   'country': '中国',
+   'province': '广东省',
+   'citycode': '020',
+   'city': '广州市',
+   'district': '从化区',
+   'township': [],
+   'neighborhood': {'name': [], 'type': []},
+   'building': {'name': [], 'type': []},
+   'adcode': '440117',
+   'street': [],
+   'number': [],
+   'location': '113.668051,23.600869',
+   'level': '热点商圈'}]}
+   
+  ```
+    
+ ##### ip定位
+ 
+ - 输入
+
+  ```
+  key_liu = 'a6e0d86bb5e96f5d29947b0da57a*****'
+def ip(ip:str)-> dict:
+    """搜索ip"""
+    url = 'https://restapi.amap.com/v3/ip?parameters'
+    param = {
+        'key':key_liu,
+        'ip':ip,
+       # 'types':types,
+        'output':'json'
+    }
+    response = requests.get(url,params=param)
+    data = response.json()
+    return data
+    
+ ip('114.247.50.2')
+   ```   
+    
+    
+ - 输出
+ 
+ ```  
+ {'status': '1',
+ 'info': 'OK',
+ 'infocode': '10000',
+ 'province': '北京市',
+ 'city': '北京市',
+ 'adcode': '110000',
+ 'rectangle': '116.0119343,39.66127144;116.7829835,40.2164962'}
+
+ ```  
+    
